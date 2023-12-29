@@ -28,8 +28,5 @@
   },
   "peerDependencies": {
     "react-native": ">=0.59.0"
-  },
-  "dependencies": {
-    "react-native-text-size-latest": "file:.yalc/react-native-text-size-latest"
   }
 }
