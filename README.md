@@ -155,51 +155,52 @@ E_UNKNOWN_ERROR      | Well... who knows?
 
 ```jsx
 //...
-import rnTextSize, { TSFontSpecs } from 'react-native-text-size-latest'
+import React, { useEffect, useState } from 'react';
+import { View, Text, Dimensions } from 'react-native';
+import rnTextSize, { TSFontSpecs } from 'react-native-text-size-latest';
 
-type Props = {}
-type State = { width: number, height: number }
+type Props = {};
 
-// On iOS 9+ will show 'San Francisco' and 'Roboto' on Android
-const fontSpecs: TSFontSpecs = {
-  fontFamily = undefined,
-  fontSize = 24,
-  fontStyle = 'italic',
-  fontWeight = 'bold',
-}
-const text = 'I ❤️ rnTextSize'
+const Test: React.FC<Props> = () => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-class Test extends Component<Props, State> {
-  state = {
-    width: 0,
-    height: 0,
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const width = Dimensions.get('window').width * 0.8;
+      const fontSpecs: TSFontSpecs = {
+        fontFamily: undefined,
+        fontSize: 24,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+      };
+      const text = 'I ❤️ rnTextSize';
 
-  async componentDidMount() {
-    const width = Dimensions.get('window').width * 0.8
-    const size = await rnTextSize.measure({
-      text,             // text to measure, can include symbols
-      width,            // max-width of the "virtual" container
-      ...fontSpecs,     // RN font specification
-    })
-    this.setState({
-      width: size.width,
-      height: size.height
-    })
-  }
+      const size = await rnTextSize.measure({
+        text,
+        width,
+        ...fontSpecs,
+      });
 
-  // The result is reversible
-  render() {
-    const { width, height } = this.state
-    return (
-      <View style={{ padding: 12 }}>
-        <Text style={{ width, height, ...fontSpecs }}>
-          {text}
-        </Text>
-      </View>
-    )
-  }
-}
+      setDimensions({
+        width: size.width,
+        height: size.height,
+      });
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures useEffect runs only once, equivalent to componentDidMount
+
+  return (
+    <View style={{ padding: 12 }}>
+      <Text style={{ ...dimensions, fontStyle: 'italic', fontWeight: 'bold', fontSize: 24 }}>
+        I ❤️ rnTextSize
+      </Text>
+    </View>
+  );
+};
+
+export default Test;
+
 ```
 
 ## flatHeights
@@ -249,55 +250,50 @@ Unlike measure, `null` elements returns 0 without generating error, and empty st
 
 ```jsx
 //...
-import rnTextSize, { TSFontSpecs } from 'react-native-text-size-latest'
+import React, { useEffect, useState } from 'react';
+import { View, Text, Dimensions } from 'react-native';
+import rnTextSize, { TSFontSpecs } from 'react-native-text-size-latest';
 
-type Props = { texts: string[] }
-type State = { heights: number[] }
+type Props = { texts: string[] };
 
-// On iOS 9+ will show 'San Francisco' and 'Roboto' on Android
-const fontSpecs: TSFontSpecs = {
-  fontFamily = undefined,
-  fontSize = 24,
-  fontStyle = 'italic',
-  fontWeight = 'bold',
-}
-const texts = ['I ❤️ rnTextSize', 'I ❤️ rnTextSize using flatHeights', 'Thx for flatHeights']
+const Test: React.FC<Props> = ({ texts }) => {
+  const [heights, setHeights] = useState<number[]>([]);
 
-class Test extends Component<Props, State> {
-  state = {
-    heights: [],
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const width = Dimensions.get('window').width * 0.8;
+      const fontSpecs: TSFontSpecs = {
+        fontFamily: undefined,
+        fontSize: 24,
+        fontStyle: 'italic',
+        fontWeight: 'bold',
+      };
 
-  async componentDidMount() {
-    const { texts } = this.props
-    const width = Dimensions.get('window').width * 0.8
-    const heights = await rnTextSize.flatHeights({
-      text: texts,      // array of texts to measure, can include symbols
-      width,            // max-width of the "virtual" container
-      ...fontSpecs,     // RN font specification
-    })
-    this.setState({
-      heights
-    })
-  }
+      const heights = await rnTextSize.flatHeights({
+        text: texts,
+        width,
+        ...fontSpecs,
+      });
 
-  render() {
-    const { texts } = this.props
-    const { heights } = this.state
-    
-    return (
-      <View style={{ padding: 12 }}>
-        {texts.map(
-          (text, index) => (
-            <Text style={{ height: heights[index], ...fontSpecs }}>
-              {text}
-            </Text>
-          )
-        )}
-      </View>
-    )
-  }
-}
+      setHeights(heights);
+    };
+
+    fetchData();
+  }, [texts]);
+
+  return (
+    <View style={{ padding: 12 }}>
+      {texts.map((text, index) => (
+        <Text key={index} style={{ height: heights[index], ...fontSpecs }}>
+          {text}
+        </Text>
+      ))}
+    </View>
+  );
+};
+
+export default Test;
+
 ```
 
 ## specsForTextStyles
