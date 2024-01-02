@@ -449,10 +449,10 @@ The [BSD 2-Clause](LICENSE) "Simplified" License.
 
 &copy; 2018-2019, Alberto Martínez. All rights reserved.
 
-[npm-badge]:      https://img.shields.io/npm/v/react-native-text-size.svg
-[npm-url]:        https://www.npmjs.com/package/react-native-text-size
+[npm-badge]:      https://img.shields.io/npm/v/react-native-text-size-latest.svg
+[npm-url]:        https://www.npmjs.com/package/react-native-text-size-latest
 [license-badge]:  https://img.shields.io/badge/license-BSD%202--Clause-blue.svg
-[license-url]:    https://github.com/aMarCruz/react-native-text-size/blob/master/LICENSE
+[license-url]:    https://github.com/aMarCruz/react-native-text-size-latest/blob/master/LICENSE
 [kofi-url]:       https://www.buymeacoffee.com/rsZpewEpSq
 [sample-app]:     https://github.com/aMarCruz/rn-text-size-sample-app
 [0]: https://facebook.github.io/react-native/docs/flatlist
